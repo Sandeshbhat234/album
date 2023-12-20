@@ -15,6 +15,12 @@
       "auth": {
         "album23135a81": {},
         "userPoolGroups": {}
+      },
+      "api": {
+        "album": {}
+      },
+      "storage": {
+        "photoalbum": {}
       }
     }
   }

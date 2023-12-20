@@ -2,7 +2,7 @@
   "version": "1",
   "cognitoConfig": {
     "identityPoolName": "album23135a81_identitypool_23135a81",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "album23135a81",
     "userPoolName": "album23135a81_userpool_23135a81",
     "autoVerifiedAttributes": [

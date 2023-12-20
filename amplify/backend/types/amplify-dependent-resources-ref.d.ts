@@ -1,4 +1,11 @@
 export type AmplifyDependentResourcesAttributes = {
+  "api": {
+    "album": {
+      "GraphQLAPIEndpointOutput": "string",
+      "GraphQLAPIIdOutput": "string",
+      "GraphQLAPIKeyOutput": "string"
+    }
+  },
   "auth": {
     "album23135a81": {
       "AppClientID": "string",
@@ -11,6 +18,12 @@ export type AmplifyDependentResourcesAttributes = {
     },
     "userPoolGroups": {
       "albumGroupRole": "string"
+    }
+  },
+  "storage": {
+    "photoalbum": {
+      "BucketName": "string",
+      "Region": "string"
     }
   }
 }
