@@ -35,7 +35,6 @@ const Photo = () => {
           input: {
             name: name,
             description: description,
-            
           },
         },
       });
@@ -46,19 +45,6 @@ const Photo = () => {
     }
   };
 
-  const submitHandler = (event) => {
-    event.preventDefault();
-    loadPhotos();
-    fetchPhotos();
-    setName("");
-    setDescription("");
-  };
-  const inputChangeHandler = (event) => {
-    setName(event.target.value);
-  };
-  const descriptionChangeHandler = (event) => {
-    setDescription(event.target.value);
-  };
   const deletePhotos = async () => {
     try {
       const result = await client.graphql({
@@ -74,6 +60,20 @@ const Photo = () => {
       console.log("error", error);
     }
     fetchPhotos();
+  };
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    loadPhotos();
+    fetchPhotos();
+    setName("");
+    setDescription("");
+  };
+  const inputChangeHandler = (event) => {
+    setName(event.target.value);
+  };
+  const descriptionChangeHandler = (event) => {
+    setDescription(event.target.value);
   };
 
   return (
