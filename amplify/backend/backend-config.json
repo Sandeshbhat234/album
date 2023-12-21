@@ -18,6 +18,9 @@
               "userPoolConfig": {
                 "userPoolId": "authalbum23135a81"
               }
+            },
+            {
+              "authenticationType": "AWS_IAM"
             }
           ],
           "defaultAuthentication": {
