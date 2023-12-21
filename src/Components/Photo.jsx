@@ -35,7 +35,7 @@ const Photo = () => {
           input: {
             name: name,
             description: description,
-            owner: "pamaso1948@anawalls.com"
+            
           },
         },
       });
