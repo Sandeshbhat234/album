@@ -1,5 +1,5 @@
-type photo @model @auth(rules: [{allow: owner}]) {
+type photo @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   name: String!
   description: String
-} 
+}

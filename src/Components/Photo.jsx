@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { generateClient } from "aws-amplify/api";
 import { createPhoto, deletePhoto } from "../graphql/mutations";
 import { listPhotos } from "../graphql/queries";
-import { Button } from "@aws-amplify/ui-react";
+import { Button, Card } from "@aws-amplify/ui-react";
 import { Amplify } from "aws-amplify";
 
 const client = generateClient();
@@ -14,27 +14,26 @@ Amplify.configure({
       endpoint:
         "https://vp3locarvbczpciekehkg5lfw4.appsync-api.ap-south-1.amazonaws.com/graphql",
       region: "ap-south-1",
-      // Set the default auth mode to "OIDC"
       defaultAuthMode: "oidc",
     },
   },
 });
 
 const Photo = () => {
-  const [photos, setPhotos] = useState([]);
+  const [notes, setNotes] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
   useEffect(() => {
-    fetchPhotos();
+    fetchNotes();
   }, []);
 
-  const fetchPhotos = async () => {
+  const fetchNotes = async () => {
     try {
       const result = await client.graphql({ query: listPhotos });
-      console.log("photo retrieved", result);
+      console.log("notes retrieved", result);
       const photoData = result.data.listPhotos.items;
-      setPhotos(photoData);
+      setNotes(photoData);
     } catch (error) {
       console.log("error fetching text", error);
     }
@@ -52,7 +51,7 @@ const Photo = () => {
         },
       });
 
-      console.log("photo uploaded", result);
+      console.log("notes uploaded", result);
     } catch (error) {
       console.log("error uploading", error);
     }
@@ -64,7 +63,7 @@ const Photo = () => {
         query: deletePhoto,
         variables: {
           input: {
-            id: photos[0].id,
+            id: notes[0].id,
           },
         },
       });
@@ -72,13 +71,13 @@ const Photo = () => {
     } catch (error) {
       console.log("error", error);
     }
-    fetchPhotos();
+    fetchNotes();
   };
 
   const submitHandler = (event) => {
     event.preventDefault();
     loadPhotos();
-    fetchPhotos();
+    fetchNotes();
     setName("");
     setDescription("");
   };
@@ -106,66 +105,84 @@ const Photo = () => {
           flexDirection: "column",
           alignItems: "center",
         }}>
-        <label
-          htmlFor="upload"
-          style={{ color: "#ff4500", marginBottom: "10px" }}>
-          <h2>Name</h2>
-        </label>
-        <input
-          id="name"
-          type="text"
-          placeholder="Type name"
-          value={name}
-          onChange={inputChangeHandler}
-          style={{ marginBottom: "10px" }}
-        />
-        <label
-          htmlFor="upload"
-          style={{ color: "#ff4500", marginBottom: "10px" }}>
-          <h2>Description</h2>
-        </label>
-        <input
-          id="description"
-          type="text"
-          placeholder="Describe"
-          value={description}
-          onChange={descriptionChangeHandler}
-          style={{ marginBottom: "10px" }}
-        />
-        <div>
-          <button style={{ backgroundColor: "#32cd32", color: "white" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            marginBottom: "10px",
+          }}>
+          <label
+            htmlFor="name"
+            style={{ color: "#ff4500", marginRight: "10px" }}>
+            <h2>Name</h2>
+          </label>
+          <input
+            id="name"
+            type="text"
+            placeholder="Type name"
+            value={name}
+            onChange={inputChangeHandler}
+          />
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            marginBottom: "10px",
+          }}>
+          <label
+            htmlFor="description"
+            style={{ color: "#ff4500", marginRight: "10px" }}>
+            <h2>Description</h2>
+          </label>
+          <input
+            id="description"
+            type="text"
+            placeholder="Describe"
+            value={description}
+            onChange={descriptionChangeHandler}
+          />
+          <button
+            style={{
+              backgroundColor: "#32cd32",
+              color: "white",
+              marginLeft: "10px",
+            }}>
             Upload
           </button>
         </div>
+        <Button
+          onClick={deletePhotos}
+          style={{
+            backgroundColor: "#1e90ff",
+            color: "white",
+            marginBottom: "10px",
+          }}>
+          Delete
+        </Button>
       </form>
-      <Button
-        onClick={deletePhotos}
-        style={{
-          backgroundColor: "#1e90ff",
-          color: "white",
-          marginBottom: "10px",
-        }}>
-        Delete
-      </Button>
       <div
         style={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}>
-        <h2 style={{ color: "#ff4500" }}>State Data</h2>
+        <h2 style={{ color: "#ff4500" }}>Notes</h2>
         <div>
-          {photos.map((item) => (
-            <div
+          {notes.map((item, idx) => (
+            <Card
+              key={item.id}
               style={{
                 backgroundColor: "#ffe4e1",
                 margin: "10px",
                 padding: "10px",
               }}>
-              <div key={item.id}>
+              <div>
                 {item.name} ---{item.description}
               </div>
-            </div>
+            </Card>
           ))}
         </div>
       </div>

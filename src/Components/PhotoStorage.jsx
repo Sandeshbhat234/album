@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   uploadData,
   downloadData,
@@ -12,13 +12,14 @@ import { Button } from "@aws-amplify/ui-react";
 const PhotoStorage = () => {
   const [photoFile, setPhotoFile] = useState({});
   const [photoUrl, setPhotoUrl] = useState("");
-  const [photoNameD, setPhotoNameD] = useState("");
-  const [photoNameU, setPhotoNameU] = useState("");
+  const [photoName, setPhotoName] = useState("");
+  const [listName, setListName] = useState([]);
+  const fileInputRef = useRef();
 
   const uploadPhoto = async () => {
     try {
       const result = await uploadData({
-        key: photoNameU,
+        key: photoName,
         data: photoFile,
         options: {
           accessLevel: "guest",
@@ -31,80 +32,155 @@ const PhotoStorage = () => {
   };
   const restorePhoto = async () => {
     const getUrlResult = await getUrl({
-      key: photoNameD,
+      key: photoName,
       options: {
         accessLevel: "guest",
       },
     });
 
     setPhotoUrl(getUrlResult.url.toString());
-    console.log("signed URL: ", getUrlResult.url.toString());
+    console.log("signed URL: ", getUrlResult.key);
   };
 
   const deletePhoto = async () => {
     try {
-      await remove({ key: photoNameU });
+      await remove({ key: photoName });
+      console.log("deleted");
     } catch (error) {
       console.log("Error ", error);
     }
   };
+  const listPhoto = async () => {
+    try {
+      const result = await list({
+        prefix: "",
+      });
+      setListName(result.items);
+      console.log(result.items);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    setPhotoName("");
+    fileInputRef.current.value = "";
+    listPhoto();
+  };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        backgroundColor: "#f0f8ff",
-        padding: "20px",
-      }}>
-      <form
-        style={{
-          marginBottom: "20px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}>
-        <label style={{ color: "#ff4500", marginBottom: "10px" }}>Photo</label>
-        <input
-          type="text"
-          onChange={(e) => setPhotoNameU(e.target.value)}
-          style={{ marginBottom: "10px" }}
-        />
-        <input
-          type="file"
-          onChange={(e) => setPhotoFile(e.target.files[0])}
-          style={{ marginBottom: "10px" }}
-        />
-        <Button
-          onClick={uploadPhoto}
-          style={{ backgroundColor: "#32cd32", color: "white" }}>
-          upload
-        </Button>
-      </form>
+    <>
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          flexDirection: "row",
+          justifyContent: "space-between",
         }}>
-        <input
-          type="text"
-          onChange={(e) => setPhotoNameD(e.target.value)}
-          style={{ marginBottom: "10px" }}
-        />
-        <Button
-          onClick={restorePhoto}
+        <form
+          onSubmit={submitHandler}
           style={{
-            backgroundColor: "#1e90ff",
-            color: "white",
-            marginBottom: "10px",
+            marginBottom: "20px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}>
-          Show Photo
-        </Button>
-        <img src={photoUrl} alt="" width={500} />
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              marginBottom: "10px",
+            }}>
+            <label style={{ color: "#ff4500", marginRight: "10px" }}>
+              Name
+            </label>
+            <input
+              type="text"
+              placeholder="to upload/show/delete"
+              value={photoName}
+              onChange={(e) => setPhotoName(e.target.value)}
+            />
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={(e) => setPhotoFile(e.target.files[0])}
+            />
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              width: "100%",
+            }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                width: "70%",
+              }}>
+              <Button
+                type="submit"
+                onClick={uploadPhoto}
+                style={{
+                  backgroundColor: "#32cd32",
+                  color: "white",
+                  marginRight: "10px",
+                }}>
+                upload
+              </Button>
+              <Button
+                type="submit"
+                onClick={restorePhoto}
+                style={{
+                  backgroundColor: "#1e90ff",
+                  color: "white",
+                  marginRight: "10px",
+                }}>
+                Show Photo
+              </Button>
+              <Button
+                type="submit"
+                onClick={deletePhoto}
+                style={{ backgroundColor: "#32cd32", color: "white" }}>
+                delete
+              </Button>
+            </div>
+            <Button
+              type="submit"
+              onClick={listPhoto}
+              style={{ backgroundColor: "#32cd32", color: "white" }}>
+              Show List
+            </Button>
+          </div>
+        </form>
       </div>
-    </div>
+      <div style={{ display: "flex", flexDirection: "row" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            width: "70%",
+          }}>
+          <img src={photoUrl} alt="" width={300} />
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            width: "30%",
+          }}>
+          <ul>
+            {listName.map((obj, idx) => (
+              <li key={idx}>{obj.key}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </>
   );
 };
 
