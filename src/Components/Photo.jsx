@@ -4,8 +4,21 @@ import { generateClient } from "aws-amplify/api";
 import { createPhoto, deletePhoto } from "../graphql/mutations";
 import { listPhotos } from "../graphql/queries";
 import { Button } from "@aws-amplify/ui-react";
+import { Amplify } from "aws-amplify";
 
 const client = generateClient();
+
+Amplify.configure({
+  API: {
+    GraphQL: {
+      endpoint:
+        "https://vp3locarvbczpciekehkg5lfw4.appsync-api.ap-south-1.amazonaws.com/graphql",
+      region: "ap-south-1",
+      // Set the default auth mode to "OIDC"
+      defaultAuthMode: "oidc",
+    },
+  },
+});
 
 const Photo = () => {
   const [photos, setPhotos] = useState([]);

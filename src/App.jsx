@@ -9,6 +9,7 @@ import Photo from "./Components/Photo";
 
 Amplify.configure(config);
 
+
 function App({ signOut, user }) {
   return (
     <>
@@ -18,8 +19,8 @@ function App({ signOut, user }) {
         </Card>
         <Button onClick={signOut}>Sign Out</Button>
       </View>
-      {/* <Photo></Photo> */}
-      <PhotoStorage></PhotoStorage>
+      <Photo></Photo>
+      {/* <PhotoStorage></PhotoStorage> */}
     </>
   );
 }
