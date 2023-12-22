@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import {
   uploadData,
-  downloadData,
   getUrl,
   list,
   remove,

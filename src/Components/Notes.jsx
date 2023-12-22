@@ -19,7 +19,7 @@ Amplify.configure({
   },
 });
 
-const Photo = () => {
+const Notes = () => {
   const [notes, setNotes] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -190,4 +190,4 @@ const Photo = () => {
   );
 };
 
-export default Photo;
+export default Notes;
