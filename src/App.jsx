@@ -2,9 +2,11 @@ import { Amplify } from "aws-amplify";
 import config from "./amplifyconfiguration.json";
 import { withAuthenticator, Button, View } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
-// import PhotoStorage from "./components/PhotoStorage";
-import Notes from "./components/Notes";
+
+
 import { useState } from "react";
+import PhotoStorage from "./Components/PhotoStorage";
+import Notes from "./Components/Notes";
 
 Amplify.configure(config);
 
@@ -38,8 +40,8 @@ function App({ signOut, user }) {
           </Button>
           <Button onClick={() => setPage("photo")}>Photo</Button>
         </div>
-        {page === "text" && <Notes />}
-        {/* {page === "photo" && <PhotoStorage/>} */}
+        {page === "text" && <Notes></Notes>}
+        {page === "photo" && <PhotoStorage></PhotoStorage>}
       </View>
     </>
   );
