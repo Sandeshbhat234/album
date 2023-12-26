@@ -172,19 +172,7 @@ const Notes = () => {
         }}>
         <h2 style={{ color: "#ff4500" }}>Notes</h2>
         <div>
-          {notes.map((item, idx) => (
-            <Card
-              key={item.id}
-              style={{
-                backgroundColor: "#ffe4e1",
-                margin: "10px",
-                padding: "10px",
-              }}>
-              <div>
-                <NotesCollectionP></NotesCollectionP>
-              </div>
-            </Card>
-          ))}
+          <NotesCollectionP></NotesCollectionP>
         </div>
       </div>
     </div>
