@@ -5,6 +5,7 @@ import { createPhoto, deletePhoto } from "../graphql/mutations";
 import { listPhotos } from "../graphql/queries";
 import { Button, Card } from "@aws-amplify/ui-react";
 import { Amplify } from "aws-amplify";
+import { NotesCollectionP } from "../ui-components";
 
 const client = generateClient();
 
@@ -180,7 +181,7 @@ const Notes = () => {
                 padding: "10px",
               }}>
               <div>
-                {item.name} ---{item.description}
+                <NotesCollectionP></NotesCollectionP>
               </div>
             </Card>
           ))}
@@ -189,5 +190,5 @@ const Notes = () => {
     </div>
   );
 };
-///added compo
+
 export default Notes;
