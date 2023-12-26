@@ -189,5 +189,5 @@ const Notes = () => {
     </div>
   );
 };
-
+///added compo
 export default Notes;
