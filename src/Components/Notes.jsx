@@ -4,6 +4,7 @@ import { generateClient } from "aws-amplify/api";
 import { createPhoto, deletePhoto } from "../graphql/mutations";
 import { listPhotos } from "../graphql/queries";
 import { Button, Card } from "@aws-amplify/ui-react";
+import { NotesCollection } from "../ui-components";
 import { Amplify } from "aws-amplify";
 
 const client = generateClient();
@@ -170,21 +171,10 @@ const Notes = () => {
           alignItems: "center",
         }}>
         <h2 style={{ color: "#ff4500" }}>Notes</h2>
+
         <div>
-          {notes.map((item, idx) => (
-            <Card
-              key={item.id}
-              style={{
-                backgroundColor: "#ffe4e1",
-                margin: "10px",
-                padding: "10px",
-              }}>
-              <div>
-                {item.name} ---{item.description}
-              </div>
-            </Card>
-          ))}
-        </div>
+              <NotesCollection></NotesCollection>
+            </div>
       </div>
     </div>
   );
